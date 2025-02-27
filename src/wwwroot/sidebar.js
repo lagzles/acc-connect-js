@@ -60,6 +60,7 @@ export function initTree(selector, onSelectionChanged) {
         event.preventTreeDefault();
         const tokens = node.id.split('|');
         if (tokens[0] === 'version') {
+            console.log('tokens[1] == version.id', tokens[1]);
             onSelectionChanged(tokens[1]);
         }
     });

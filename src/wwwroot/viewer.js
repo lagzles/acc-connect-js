@@ -26,6 +26,7 @@ export function initViewer(container) {
 }
 
 export function loadModel(viewer, urn) {
+    console.log('urn',urn);
     function onDocumentLoadSuccess(doc) {
         viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry());
     }
