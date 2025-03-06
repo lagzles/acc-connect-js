@@ -28,3 +28,17 @@ try {
     alert('Could not initialize the application. See console for more details.');
     console.error(err);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const items = document.querySelectorAll("li");
+
+    items.forEach(item => {
+        item.addEventListener("click", function () {
+            // Remove a classe 'selected' de todos os itens
+            items.forEach(i => i.classList.remove("selected"));
+            
+            // Adiciona a classe ao item clicado
+            this.classList.add("selected");
+        });
+    });
+});

@@ -28,14 +28,23 @@ async function getContents(hubId, projectId, folderId = null) {
         if (item.folder) {
             return createTreeNode(`folder|${hubId}|${projectId}|${item.id}`, item.name, 'icon-my-folder', true);
         } else {
-            return createTreeNode(`item|${hubId}|${projectId}|${item.id}`, item.name, 'icon-item', true);
+            // return createTreeNode(`item|${hubId}|${projectId}|${item.id}`, item.name, 'icon-item', true);
+            return createTreeNode(`item|${hubId}|${projectId}|${item.id}`, item.name, 'icon-item', false);
         }
     });
 }
 
 async function getVersions(hubId, projectId, itemId) {
+    console.log(hubId, projectId, itemId);
+
     const versions = await getJSON(`/api/hubs/${hubId}/projects/${projectId}/contents/${itemId}/versions`);
-    return versions.map(version => createTreeNode(`version|${version.id}`, version.name, 'icon-version'));
+
+    const last_version = versions[0]
+    console.log('last_version.id', last_version.id)
+
+    // onSelectionChanged(last_version.id);
+
+    // return versions.map(version => createTreeNode(`version|${version.id}`, version.name, 'icon-version'));
 }
 
 export function initTree(selector, onSelectionChanged) {
@@ -57,11 +66,48 @@ export function initTree(selector, onSelectionChanged) {
         }
     });
     tree.on('node.click', function (event, node) {
+
+        // Remove a classe 'selected' de todos os nós antes de adicionar ao clicado
+        document.querySelectorAll('.inspire-tree li').forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        // Adiciona a classe apenas ao nó clicado
+        const clickedElement = document.querySelector(`[data-uid="${node.id}"]`);
+        if (clickedElement) {
+            clickedElement.classList.add('selected');
+
+
+            const tokens = node.id.split('|');
+            console.log(node.id);
+
+            // if (tokens[0] === 'version') {
+            if (tokens[0] === 'item') {
+                const hubId = tokens[1]
+                const projectId = tokens[2]
+                const itemId  = tokens[3]
+                const versions = getJSON(`/api/hubs/${hubId}/projects/${projectId}/contents/${itemId}/versions`);
+
+                versions.then(result => {
+                    const last_version = result[0]
+                    console.log(result)
+                    console.log(last_version)
+                    console.log('last_version.id', last_version.id)
+        
+                    onSelectionChanged(last_version.id);
+
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+
         event.preventTreeDefault();
+        
         const tokens = node.id.split('|');
         if (tokens[0] === 'version') {
-            console.log('tokens[1] == version.id', tokens[1]);
-            onSelectionChanged(tokens[1]);
+                console.log('tokens[1] == version.id', tokens[1]);
+                onSelectionChanged(tokens[1]);
         }
     });
     return new InspireTreeDOM(tree, { target: selector });

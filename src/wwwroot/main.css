@@ -3,6 +3,9 @@ body, html {
     padding: 0;
     height: 100vh;
     font-family: ArtifaktElement;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
 #header, #sidebar, #preview {
@@ -12,14 +15,44 @@ body, html {
 #header {
     height: 3em;
     width: 100%;
+   
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Alinha os itens verticalmente */
+    justify-content: space-between; /* Mantém a imagem e o título à esquerda e o botão à direita */
+    padding: 5px; /* Adiciona espaçamento interno */
+}
+/* Garante que a imagem e o título fiquem juntos */
+.logo {
+    display: block;
+    margin-right: 10px; /* Espaço entre a imagem e o título */
 }
 
+.title {
+    margin: 0; /* Remove margens padrão */
+    font-size: 18px; /* Ajusta o tamanho do título */
+}
+
+/* Ajusta o botão para não colar nas bordas */
+#login {
+    padding: 8px 35px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    font-family: ArtifaktElement;
+    font-size: 1em;
+}
+
+/* Efeito ao passar o mouse */
+#login:hover {
+    background-color: #0056b3;
+}
+
+
 #sidebar {
-    width: 35%;
+    width: 55%;
     left: 0;
     top: 3em;
     bottom: 0;
@@ -27,7 +60,7 @@ body, html {
 }
 
 #preview {
-    width: 65%;
+    width: 45%;
     right: 0;
     top: 3em;
     bottom: 0;
@@ -35,12 +68,8 @@ body, html {
 
 #header > * {
     height: 2em;
-    margin: 0 0.5em;
-}
-
-#login {
-    font-family: ArtifaktElement;
-    font-size: 1em;
+    margin: 0 2.5em;
+    
 }
 
 #header .title {
@@ -50,6 +79,34 @@ body, html {
 
 #tree {
     margin: 0.5em;
+    background-color: #1a1a1a;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Estiliza os itens da lista */
+li {
+    list-style: none;
+    padding: 5px;
+    transition: background 0.3s ease;
+}
+
+/* Estiliza os links da árvore */
+a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Efeito ao passar o mouse */
+li:hover {
+    background-color: #333;
+}
+
+/* Estilo para destacar o item selecionado */
+li.selected {
+    /* background-color: #0044cc; */
+    color: white;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
@@ -66,27 +123,60 @@ body, html {
 }
 
 .icon-hub:before {
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/apps-16.svg); /* or https://raw.githubusercontent.com/primer/octicons/main/icons/stack-16.svg */
+    /* background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/apps-16.svg);  */
+    background-image: url('img/folder-tree-solid.svg'); /* or https://raw.githubusercontent.com/primer/octicons/main/icons/stack-16.svg */
     background-size: cover;
 }
 
 .icon-project:before {
     
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/project-16.svg); /* or https://raw.githubusercontent.com/primer/octicons/main/icons/organization-16.svg */
+    /* background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/project-16.svg); */
+    background-image: url('img/folder-solid.svg'); /* or https://raw.githubusercontent.com/primer/octicons/main/icons/organization-16.svg */
     background-size: cover;
 }
 
 .icon-my-folder:before {
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/file-directory-16.svg);
+    /* background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/file-directory-16.svg); */
+    background-image: url('img/folder-solid.svg');
     background-size: cover;
 }
 
 .icon-item:before {
-    background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/file-16.svg);
+    /* background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/file-16.svg); */
+    background-image: url('img/hotel-solid.svg');
     background-size: cover;
 }
 
 .icon-version:before {
     background-image: url(https://raw.githubusercontent.com/primer/octicons/main/icons/clock-16.svg);
     background-size: cover;
+}
+
+
+
+button {
+    background-color: #007bff; /* Azul padrão */
+    color: white; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    padding: 10px 20px; /* Ajusta o espaçamento interno */
+    font-size: 16px; /* Tamanho do texto */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Altera o cursor ao passar o mouse */
+    transition: background-color 0.3s ease;
+
+    /* Garante que o texto fique centralizado */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Efeito ao passar o mouse */
+button:hover {
+    background-color: #0056b3; /* Azul mais escuro */
+}
+
+/* Efeito ao clicar */
+button:active {
+    background-color: #004499;
 }
