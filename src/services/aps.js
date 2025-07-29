@@ -1,9 +1,11 @@
 const { AuthenticationClient, ResponseType } = require('@aps_sdk/authentication');
 const { DataManagementClient } = require('@aps_sdk/data-management');
+
 const { APS_CLIENT_ID, APS_CLIENT_SECRET, APS_CALLBACK_URL, INTERNAL_TOKEN_SCOPES, PUBLIC_TOKEN_SCOPES } = require('../../config.js');
 
 const authenticationClient = new AuthenticationClient();
 const dataManagementClient = new DataManagementClient();
+
 const service = module.exports = {};
 
 service.getAuthorizationUrl = () => authenticationClient.authorize(APS_CLIENT_ID, ResponseType.Code, APS_CALLBACK_URL, INTERNAL_TOKEN_SCOPES);
@@ -85,3 +87,46 @@ service.getItemVersions = async (projectId, itemId, accessToken) => {
     const resp = await dataManagementClient.getItemVersions(projectId, itemId, { accessToken });
     return resp.data;
 };
+
+service.getItemManifest = async (projectId, itemId, accessToken) => {
+    // if (!projectId || !itemId) {
+    //     throw new Error('Project ID and Item ID are required to get the manifest.');
+    // }
+    // //GET https://developer.api.autodesk.com/derivativeservice/v2/manifest/:urn
+
+    // // 2. Buscar o manifest do Model Derivative
+    // const manifestUrl = `https://developer.api.autodesk.com/modelderivative/v2/designdata/${encodedUrn}/manifest`;
+
+    // const manifestResponse = await axios.get(manifestUrl, {
+    //     headers: {
+    //         Authorization: `Bearer ${accessToken}`
+    //     }
+    // });
+
+    // return manifestResponse.data;
+}
+
+
+service.getItem = async (projectId, itemId, accessToken) => {
+    if (!projectId || !itemId) {
+        throw new Error('Project ID and Item ID are required to get the manifest.');
+    }
+    //GET https://developer.api.autodesk.com/derivativeservice/v2/manifest/:urn
+
+    // 2. Buscar o manifest do Model Derivative
+    const resp = await dataManagementClient.getItem(projectId, itemId, { accessToken });
+
+    return resp.data;
+}
+
+
+service.getModelSets = async (containerId, accessToken) => {
+    const getModelSetsUrl = `https://developer.api.autodesk.com/bim360/modelset/v3/containers/${containerId}/modelsets`;
+     const getModelSetsResp = await axios.get(getModelSetsUrl, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    });
+
+    return getModelSetsResp.data;
+}

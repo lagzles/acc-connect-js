@@ -29,7 +29,7 @@ async function getContents(hubId, projectId, folderId = null) {
             return createTreeNode(`folder|${hubId}|${projectId}|${item.id}`, item.name, 'icon-my-folder', true);
         } else {
             // return createTreeNode(`item|${hubId}|${projectId}|${item.id}`, item.name, 'icon-item', true);
-            return createTreeNode(`item|${hubId}|${projectId}|${item.id}`, item.name, 'icon-item', false);
+            return createTreeNode(`item|${hubId}|${projectId}|${item.id}`, item.name, 'icon-my-folder', true);
         }
     });
 }
@@ -38,16 +38,36 @@ async function getVersions(hubId, projectId, itemId) {
     console.log(hubId, projectId, itemId);
 
     const versions = await getJSON(`/api/hubs/${hubId}/projects/${projectId}/contents/${itemId}/versions`);
-
+    // console.log('versions', versions);
     const last_version = versions[0]
     console.log('last_version.id', last_version.id)
 
+    const stuff = await getJSON(`/api/hubs/${hubId}/projects/${projectId}/contents/${itemId}/stuff`);
+    console.log('stuff 2', stuff);
+
+    
+    const modelSets = await getJSON(`/api/hubs/${hubId}/modelsets`);
+    console.log('modelSets', modelSets);
+
+
+    const modelSetsProj = await getJSON(`/api/hubs/${projectId}/modelsets`);
+    console.log('modelSetsProj', modelSetsProj);
+
+    const modelSetsItem = await getJSON(`/api/hubs/${itemId}/modelsets`);
+    console.log('modelSetsItem', modelSetsItem);
+
+
+    // const manifest = await getJSON(`/api/manifest/${projectId}/${itemId}`);
+    // console.log('manifestttttttt', manifest);
+
     // onSelectionChanged(last_version.id);
 
-    // return versions.map(version => createTreeNode(`version|${version.id}`, version.name, 'icon-version'));
+    return versions.map(version => createTreeNode(`version|${version.id}`, version.name, 'icon-version'));
 }
 
 export function initTree(selector, onSelectionChanged) {
+    onSelectionChanged("");
+
     // See http://inspire-tree.com
     const tree = new InspireTree({
         data: function (node) {
@@ -65,7 +85,7 @@ export function initTree(selector, onSelectionChanged) {
             }
         }
     });
-    tree.on('node.click', function (event, node) {
+    tree.on('node.click', async function (event, node) {
 
         // Remove a classe 'selected' de todos os nós antes de adicionar ao clicado
         document.querySelectorAll('.inspire-tree li').forEach(item => {
@@ -77,38 +97,16 @@ export function initTree(selector, onSelectionChanged) {
         if (clickedElement) {
             clickedElement.classList.add('selected');
 
-
             const tokens = node.id.split('|');
-            console.log(node.id);
 
-            // if (tokens[0] === 'version') {
-            if (tokens[0] === 'item') {
-                const hubId = tokens[1]
-                const projectId = tokens[2]
-                const itemId  = tokens[3]
-                const versions = getJSON(`/api/hubs/${hubId}/projects/${projectId}/contents/${itemId}/versions`);
-
-                versions.then(result => {
-                    const last_version = result[0]
-                    console.log(result)
-                    console.log(last_version)
-                    console.log('last_version.id', last_version.id)
-        
-                    onSelectionChanged(last_version.id);
-
-                }).catch(err => {
-                    console.log(err)
-                })
+            if (tokens[0] === 'version') {
+                const versionId = tokens[1];
+                onselectionChanged(versionId);
             }
         }
 
         event.preventTreeDefault();
         
-        const tokens = node.id.split('|');
-        if (tokens[0] === 'version') {
-                console.log('tokens[1] == version.id', tokens[1]);
-                onSelectionChanged(tokens[1]);
-        }
     });
     return new InspireTreeDOM(tree, { target: selector });
 }

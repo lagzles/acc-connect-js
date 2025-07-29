@@ -1,5 +1,6 @@
 const express = require('express');
 const { authRefreshMiddleware, getHubs, getProjects, getProjectContents, getItemVersions } = require('../services/aps.js');
+const { getItemManifest, getItem, getModelSets } = require('../services/aps.js');
 
 let router = express.Router();
 
@@ -35,10 +36,46 @@ router.get('/api/hubs/:hub_id/projects/:project_id/contents', async function (re
 router.get('/api/hubs/:hub_id/projects/:project_id/contents/:item_id/versions', async function (req, res, next) {
     try {
         const versions = await getItemVersions(req.params.project_id, req.params.item_id, req.internalOAuthToken.access_token);
+        // console.log('Getting manifest for item:', req.params.item_id);
         res.json(versions.map(version => ({ id: version.id, name: version.attributes.createTime })));
     } catch (err) {
         next(err);
     }
 });
+
+
+router.get('/api/hubs/:hub_id/projects/:project_id/contents/:item_id/stuff', async function (req, res, next) {
+    try {
+        const item = await getItem(req.params.project_id, req.params.item_id, req.internalOAuthToken.access_token);
+        res.json(item);
+    } catch (err) {
+        next(err);
+    }
+});
+
+
+router.get('/api/manifest/:project_id/:item_id', async function (req, res, next) {
+    try {
+        const item = await getItem(req.params.project_id, req.params.item_id, req.internalOAuthToken.access_token);
+        res.json({item});
+    } catch (err) {
+        console.log('Error getting manifest:', err);
+        next(err);
+    }
+});
+
+router.get('/api/hubs/:containerId/modelsets', async function (req, res, next) {
+    try {   
+
+        const aaa = await getModelSets(req.params.containerId, req.internalOAuthToken.access_token);
+        console.log('Model sets:', aaa);
+
+    }
+    catch (err) {
+        console.log('Error getting hubs:', err);
+        next(err);
+    }   
+});
+
 
 module.exports = router;
