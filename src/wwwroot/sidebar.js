@@ -45,17 +45,8 @@ async function getVersions(hubId, projectId, itemId) {
     const stuff = await getJSON(`/api/hubs/${hubId}/projects/${projectId}/contents/${itemId}/stuff`);
     console.log('stuff 2', stuff);
 
-    
-    const modelSets = await getJSON(`/api/hubs/${hubId}/modelsets`);
-    console.log('modelSets', modelSets);
-
-
     const modelSetsProj = await getJSON(`/api/hubs/${projectId}/modelsets`);
     console.log('modelSetsProj', modelSetsProj);
-
-    const modelSetsItem = await getJSON(`/api/hubs/${itemId}/modelsets`);
-    console.log('modelSetsItem', modelSetsItem);
-
 
     // const manifest = await getJSON(`/api/manifest/${projectId}/${itemId}`);
     // console.log('manifestttttttt', manifest);

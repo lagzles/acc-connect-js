@@ -1,6 +1,6 @@
 const express = require('express');
 const { authRefreshMiddleware, getHubs, getProjects, getProjectContents, getItemVersions } = require('../services/aps.js');
-const { getItemManifest, getItem, getModelSets } = require('../services/aps.js');
+const { getItem, getModelSets } = require('../services/aps.js');
 
 let router = express.Router();
 
@@ -72,8 +72,8 @@ router.get('/api/hubs/:containerId/modelsets', async function (req, res, next) {
 
     }
     catch (err) {
-        console.log('Error getting hubs:', err);
-        next(err);
+        console.log('Error getting hubs:', err.message);
+        next(err.message);
     }   
 });
 

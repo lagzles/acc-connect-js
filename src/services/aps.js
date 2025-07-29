@@ -1,5 +1,6 @@
 const { AuthenticationClient, ResponseType } = require('@aps_sdk/authentication');
 const { DataManagementClient } = require('@aps_sdk/data-management');
+const axios = require('axios');
 
 const { APS_CLIENT_ID, APS_CLIENT_SECRET, APS_CALLBACK_URL, INTERNAL_TOKEN_SCOPES, PUBLIC_TOKEN_SCOPES } = require('../../config.js');
 
@@ -87,25 +88,6 @@ service.getItemVersions = async (projectId, itemId, accessToken) => {
     const resp = await dataManagementClient.getItemVersions(projectId, itemId, { accessToken });
     return resp.data;
 };
-
-service.getItemManifest = async (projectId, itemId, accessToken) => {
-    // if (!projectId || !itemId) {
-    //     throw new Error('Project ID and Item ID are required to get the manifest.');
-    // }
-    // //GET https://developer.api.autodesk.com/derivativeservice/v2/manifest/:urn
-
-    // // 2. Buscar o manifest do Model Derivative
-    // const manifestUrl = `https://developer.api.autodesk.com/modelderivative/v2/designdata/${encodedUrn}/manifest`;
-
-    // const manifestResponse = await axios.get(manifestUrl, {
-    //     headers: {
-    //         Authorization: `Bearer ${accessToken}`
-    //     }
-    // });
-
-    // return manifestResponse.data;
-}
-
 
 service.getItem = async (projectId, itemId, accessToken) => {
     if (!projectId || !itemId) {

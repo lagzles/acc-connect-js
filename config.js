@@ -7,7 +7,7 @@ if (!APS_CLIENT_ID || !APS_CLIENT_SECRET || !APS_CALLBACK_URL || !SERVER_SESSION
     process.exit(1);
 }
 const INTERNAL_TOKEN_SCOPES = [Scopes.DataRead, Scopes.ViewablesRead];
-const PUBLIC_TOKEN_SCOPES = [Scopes.ViewablesRead];
+const PUBLIC_TOKEN_SCOPES = [Scopes.DataRead, Scopes.ViewablesRead];
 PORT = PORT || 8080;
 
 module.exports = {
